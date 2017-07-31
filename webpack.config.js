@@ -8,8 +8,10 @@ module.exports = {
     library: 'pra'
   },
   module: {
-    loaders: [
-      { test: /\.js/, loader: 'babel', exclude: /node_modules/ }
-    ]
+    loaders: [{
+      test: /\.js/,
+      loader: 'babel',
+      exclude: /node_modules/
+    }]
   }
 }
