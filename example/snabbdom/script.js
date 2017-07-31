@@ -5,9 +5,9 @@ import {
 
 function view() {
   return h('div', [
-    h('h1', 'Top 10 movies'),
-    h('h1', 'Top 10 movies'),
-    h('h1', 'Top 10 movies')
+    h('div', 'hello world'),
+    h('h1', 'hello world'),
+    h('h2', 'hello world')
   ]);
 }
 
