@@ -1,7 +1,7 @@
 function updateClass(oldVnode, vnode) {
   var cur, name, elm = vnode.elm,
-      oldClass = oldVnode.data.class,
-      klass = vnode.data.class;
+    oldClass = oldVnode.data.class,
+    klass = vnode.data.class;
 
   if (!oldClass && !klass) return;
   oldClass = oldClass || {};
@@ -20,4 +20,7 @@ function updateClass(oldVnode, vnode) {
   }
 }
 
-module.exports = {create: updateClass, update: updateClass};
+export default {
+  create: updateClass,
+  update: updateClass
+};

@@ -1,8 +1,14 @@
 var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
-var nextFrame = function(fn) { raf(function() { raf(fn); }); };
+var nextFrame = function(fn) {
+  raf(function() {
+    raf(fn);
+  });
+};
 
 function setNextFrame(obj, prop, val) {
-  nextFrame(function() { obj[prop] = val; });
+  nextFrame(function() {
+    obj[prop] = val;
+  });
 }
 
 function getTextNodeRect(textNode) {
@@ -11,7 +17,7 @@ function getTextNodeRect(textNode) {
     var range = document.createRange();
     range.selectNodeContents(textNode);
     if (range.getBoundingClientRect) {
-        rect = range.getBoundingClientRect();
+      rect = range.getBoundingClientRect();
     }
   }
   return rect;
@@ -21,8 +27,8 @@ function calcTransformOrigin(isTextNode, textRect, boundingRect) {
   if (isTextNode) {
     if (textRect) {
       //calculate pixels to center of text from left edge of bounding box
-      var relativeCenterX = textRect.left + textRect.width/2 - boundingRect.left;
-      var relativeCenterY = textRect.top + textRect.height/2 - boundingRect.top;
+      var relativeCenterX = textRect.left + textRect.width / 2 - boundingRect.left;
+      var relativeCenterY = textRect.top + textRect.height / 2 - boundingRect.top;
       return relativeCenterX + 'px ' + relativeCenterY + 'px';
     }
   }
@@ -31,13 +37,14 @@ function calcTransformOrigin(isTextNode, textRect, boundingRect) {
 
 function getTextDx(oldTextRect, newTextRect) {
   if (oldTextRect && newTextRect) {
-    return ((oldTextRect.left + oldTextRect.width/2) - (newTextRect.left + newTextRect.width/2));
+    return ((oldTextRect.left + oldTextRect.width / 2) - (newTextRect.left + newTextRect.width / 2));
   }
   return 0;
 }
+
 function getTextDy(oldTextRect, newTextRect) {
   if (oldTextRect && newTextRect) {
-    return ((oldTextRect.top + oldTextRect.height/2) - (newTextRect.top + newTextRect.height/2));
+    return ((oldTextRect.top + oldTextRect.height / 2) - (newTextRect.top + newTextRect.height / 2));
   }
   return 0;
 }
@@ -76,12 +83,12 @@ function destroy(vnode) {
 
 function post() {
   var i, id, newElm, oldVnode, oldElm, hRatio, wRatio,
-      oldRect, newRect, dx, dy, origTransform, origTransition,
-      newStyle, oldStyle, newComputedStyle, isTextNode,
-      newTextRect, oldTextRect;
+    oldRect, newRect, dx, dy, origTransform, origTransition,
+    newStyle, oldStyle, newComputedStyle, isTextNode,
+    newTextRect, oldTextRect;
   for (i = 0; i < created.length; i += 2) {
     id = created[i];
-    newElm = created[i+1].elm;
+    newElm = created[i + 1].elm;
     oldVnode = removed[id];
     if (oldVnode) {
       isTextNode = oldVnode.isTextNode && isTextElement(newElm); //Are old & new both text?
@@ -109,23 +116,23 @@ function post() {
       origTransform = newStyle.transform;
       origTransition = newStyle.transition;
       if (newComputedStyle.display === 'inline') //inline elements cannot be transformed
-        newStyle.display = 'inline-block';        //this does not appear to have any negative side effects
+        newStyle.display = 'inline-block'; //this does not appear to have any negative side effects
       newStyle.transition = origTransition + 'transform 0s';
       newStyle.transformOrigin = calcTransformOrigin(isTextNode, newTextRect, newRect);
       newStyle.opacity = '0';
-      newStyle.transform = origTransform + 'translate('+dx+'px, '+dy+'px) ' +
-                               'scale('+1/wRatio+', '+1/hRatio+')';
+      newStyle.transform = origTransform + 'translate(' + dx + 'px, ' + dy + 'px) ' +
+        'scale(' + 1 / wRatio + ', ' + 1 / hRatio + ')';
       setNextFrame(newStyle, 'transition', origTransition);
       setNextFrame(newStyle, 'transform', origTransform);
       setNextFrame(newStyle, 'opacity', '1');
       // Animate old element
       for (var key in oldVnode.savedStyle) { //re-apply saved inherited properties
         if (parseInt(key) != key) {
-          var ms = key.substring(0,2) === 'ms';
-          var moz = key.substring(0,3) === 'moz';
-          var webkit = key.substring(0,6) === 'webkit';
-      	  if (!ms && !moz && !webkit) //ignore prefixed style properties
-        	  oldStyle[key] = oldVnode.savedStyle[key];
+          var ms = key.substring(0, 2) === 'ms';
+          var moz = key.substring(0, 3) === 'moz';
+          var webkit = key.substring(0, 6) === 'webkit';
+          if (!ms && !moz && !webkit) //ignore prefixed style properties
+            oldStyle[key] = oldVnode.savedStyle[key];
         }
       }
       oldStyle.position = 'absolute';
@@ -138,7 +145,7 @@ function post() {
       oldStyle.transform = '';
       oldStyle.opacity = '1';
       document.body.appendChild(oldElm);
-      setNextFrame(oldStyle, 'transform', 'translate('+ -dx +'px, '+ -dy +'px) scale('+wRatio+', '+hRatio+')'); //scale must be on far right for translate to be correct
+      setNextFrame(oldStyle, 'transform', 'translate(' + -dx + 'px, ' + -dy + 'px) scale(' + wRatio + ', ' + hRatio + ')'); //scale must be on far right for translate to be correct
       setNextFrame(oldStyle, 'opacity', '0');
       oldElm.addEventListener('transitionend', function(ev) {
         if (ev.propertyName === 'transform')
@@ -149,4 +156,9 @@ function post() {
   removed = created = undefined;
 }
 
-module.exports = {pre: pre, create: create, destroy: destroy, post: post};
+export default {
+  pre,
+  create,
+  destroy,
+  post
+};

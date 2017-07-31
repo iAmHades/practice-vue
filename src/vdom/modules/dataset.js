@@ -20,4 +20,8 @@ function updateDataset(oldVnode, vnode) {
   }
 }
 
-module.exports = {create: updateDataset, update: updateDataset}
+
+export default {
+  create: updateDataset,
+  update: updateDataset
+}

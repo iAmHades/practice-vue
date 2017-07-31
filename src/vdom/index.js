@@ -1,13 +1,17 @@
 'use strict';
 
-const snabbdom = require('./snabbdom.js');
-const patch = snabbdom.init([
-  require('./modules/class'),
-  require('./modules/props'),
-  require('./modules/style'),
-  require('./modules/eventlisteners'),
+import snabbdom from './snabbdom'
+import cls from './modules/class'
+import props from './modules/props'
+import style from './modules/style'
+import eventlisteners from './modules/eventlisteners'
+import h from './h'
+
+const patch = snabbdom([
+  cls, props, style, eventlisteners
 ]);
-const h = require('./h.js');
 
-
-export 
+export {
+  h,
+  patch
+}

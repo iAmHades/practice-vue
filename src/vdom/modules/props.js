@@ -1,6 +1,7 @@
 function updateProps(oldVnode, vnode) {
   var key, cur, old, elm = vnode.elm,
-      oldProps = oldVnode.data.props, props = vnode.data.props;
+    oldProps = oldVnode.data.props,
+    props = vnode.data.props;
 
   if (!oldProps && !props) return;
   oldProps = oldProps || {};
@@ -20,4 +21,7 @@ function updateProps(oldVnode, vnode) {
   }
 }
 
-module.exports = {create: updateProps, update: updateProps};
+export default {
+  create: updateProps,
+  update: updateProps
+};

@@ -1,14 +1,20 @@
 var raf = (typeof window !== 'undefined' && window.requestAnimationFrame) || setTimeout;
-var nextFrame = function(fn) { raf(function() { raf(fn); }); };
+var nextFrame = function(fn) {
+  raf(function() {
+    raf(fn);
+  });
+};
 
 function setNextFrame(obj, prop, val) {
-  nextFrame(function() { obj[prop] = val; });
+  nextFrame(function() {
+    obj[prop] = val;
+  });
 }
 
 function updateStyle(oldVnode, vnode) {
   var cur, name, elm = vnode.elm,
-      oldStyle = oldVnode.data.style,
-      style = vnode.data.style;
+    oldStyle = oldVnode.data.style,
+    style = vnode.data.style;
 
   if (!oldStyle && !style) return;
   oldStyle = oldStyle || {};
@@ -36,7 +42,8 @@ function updateStyle(oldVnode, vnode) {
 }
 
 function applyDestroyStyle(vnode) {
-  var style, name, elm = vnode.elm, s = vnode.data.style;
+  var style, name, elm = vnode.elm,
+    s = vnode.data.style;
   if (!s || !(style = s.destroy)) return;
   for (name in style) {
     elm.style[name] = style[name];
@@ -49,8 +56,12 @@ function applyRemoveStyle(vnode, rm) {
     rm();
     return;
   }
-  var name, elm = vnode.elm, idx, i = 0, maxDur = 0,
-      compStyle, style = s.remove, amount = 0, applied = [];
+  var name, elm = vnode.elm,
+    idx, i = 0,
+    maxDur = 0,
+    compStyle, style = s.remove,
+    amount = 0,
+    applied = [];
   for (name in style) {
     applied.push(name);
     elm.style[name] = style[name];
@@ -58,7 +69,7 @@ function applyRemoveStyle(vnode, rm) {
   compStyle = getComputedStyle(elm);
   var props = compStyle['transition-property'].split(', ');
   for (; i < props.length; ++i) {
-    if(applied.indexOf(props[i]) !== -1) amount++;
+    if (applied.indexOf(props[i]) !== -1) amount++;
   }
   elm.addEventListener('transitionend', function(ev) {
     if (ev.target === elm) --amount;
@@ -66,4 +77,10 @@ function applyRemoveStyle(vnode, rm) {
   });
 }
 
-module.exports = {create: updateStyle, update: updateStyle, destroy: applyDestroyStyle, remove: applyRemoveStyle};
+
+export default {
+  create: updateStyle,
+  update: updateStyle,
+  destroy: applyDestroyStyle,
+  remove: applyRemoveStyle
+};

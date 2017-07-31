@@ -1,10 +1,10 @@
 var path = require('path')
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: path.resolve(__dirname, 'example/snabbdom/script.js'),
   output: {
-    path: path.resolve(__dirname, 'examples'),
-    filename: 'practice.js',
+    path: path.resolve(__dirname, 'example/snabbdom'),
+    filename: 'build.js',
     library: 'pra'
   },
   module: {
