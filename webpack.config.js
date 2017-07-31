@@ -1,11 +1,11 @@
 var path = require('path')
 
 module.exports = {
-  entry: path.resolve(__dirname, 'example/snabbdom/script.js'),
+  entry: path.resolve(__dirname, 'src/index.umd.js'),
   output: {
-    path: path.resolve(__dirname, 'example/snabbdom'),
+    path: path.resolve(__dirname, 'example'),
     filename: 'build.js',
-    library: 'pra'
+    library: 'Vue'
   },
   module: {
     loaders: [{

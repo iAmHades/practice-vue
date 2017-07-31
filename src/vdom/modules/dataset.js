@@ -20,7 +20,6 @@ function updateDataset(oldVnode, vnode) {
   }
 }
 
-
 export default {
   create: updateDataset,
   update: updateDataset

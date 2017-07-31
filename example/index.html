@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Vue的测试</title>
+    <script type="text/javascript" src="build.js"></script>
+  </head>
+  <body>
+    <div id="editor">
+      <div class="xxx">{{input}}</div>
+      {{input}}
+    </div>
+    <script type="text/javascript">
+      Vue({
+        el: '#editor',
+        data: {
+          input: '# hello'
+        }
+      })
+    </script>
+  </body>
+</html>
