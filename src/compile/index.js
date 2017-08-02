@@ -8,7 +8,11 @@ const cache = Object.create(null)
 export default function compile(html) {
 	html = html.trim()
 	const hit = cache[html]
-	return hit || (cache[html] = renderFunction(parse(html)))
+	return hit || (cache[html] = generateFunction(renderFunction(parse(html))))
+}
+
+function generateFunction(func){
+	return new Function(func)
 }
 
 function renderFunction(ast) {
