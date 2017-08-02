@@ -11,8 +11,9 @@ export default function compile(html) {
 	return hit || (cache[html] = generateFunction(renderFunction(parse(html))))
 }
 
-function generateFunction(func){
-	return new Function(func)
+function generateFunction(func) {
+	//要使用with进行限定运行的作用域，不然会找不到h，变量的值。
+	return new Function('with (this) { return ' + func + '}')
 }
 
 function renderFunction(ast) {
@@ -61,8 +62,8 @@ function generateText(text) {
 	return 'String(' + escapeNewlines(exp) + ')'
 }
 
-function escapeNewlines (str) {
-  return str.replace(/\n/g, '\\n')
+function escapeNewlines(str) {
+	return str.replace(/\n/g, '\\n')
 }
 
 function h() {}
