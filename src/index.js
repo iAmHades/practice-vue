@@ -13,13 +13,16 @@ export default class Vue {
 		proxyAttribute(this, this._data)
 		this._el = document.querySelector(options.el)
 		const renderFunction = compile(getOuterHTML(this._el))
+		// 因为修改data为响应式,这样就能通过getter函数，完成依赖的收集，
+		// 因为渲染函数中在使用这些变量进行渲染的时候，会触发getter函数，
 		this._ob = observer(this._data)
-		// 开发测试用，强制渲染函数渲染为VNode树，进行patch生成dom
-		let vnode= renderFunction.call(this)
-		this.update(vnode)
+		// watcher函数则用来声明第一次收集依赖
+		this._watcher = new Watcher(this, renderFunction, this._update)
+			// init的时候
+		this._update(this._watcher.value)
 	}
 
-	update(vtree) {
+	_update(vtree) {
 		if (!this._tree) {
 			patch(this._el, vtree)
 		} else {
@@ -30,7 +33,6 @@ export default class Vue {
 }
 
 Vue.prototype.h = h
-
 
 function getOuterHTML(dom) {
 	return dom.outerHTML
