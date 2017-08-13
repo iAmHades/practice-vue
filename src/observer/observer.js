@@ -29,7 +29,6 @@ function defineReactive(obj, key, val) {
 		enumerable: true,
 		configurable: true,
 		get: function reactiveGetter() {
-			console.info('...getter...')
 				// watcher过程中，render函数的渲染触发getter，完成依赖收集
 				// 其他形式触发的getter不再被收集
 			if (Dep.target) {
